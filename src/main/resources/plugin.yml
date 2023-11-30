@@ -1,0 +1,4 @@
+name: mv-homes
+version: '${version}'
+main: dev.spozap.mvhomes.Mv_homes
+api-version: '1.20'
