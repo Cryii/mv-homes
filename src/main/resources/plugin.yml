@@ -1,4 +1,9 @@
 name: mv-homes
 version: '${version}'
-main: dev.spozap.mvhomes.Mv_homes
+main: dev.spozap.mvhomes.MvHomes
 api-version: '1.20'
+author: Xx_EvilMelon_xX
+commands:
+  sethome:
+    usage: /sethome
+    description: Sets an user home
