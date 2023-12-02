@@ -1,5 +1,6 @@
 package dev.spozap.mvhomes
 
+import dev.spozap.mvhomes.commands.DelhomeCommand
 import dev.spozap.mvhomes.commands.HomesCommand
 import dev.spozap.mvhomes.commands.SethomeCommand
 import dev.spozap.mvhomes.listeners.PlayerListeners
@@ -27,6 +28,7 @@ class MvHomes : JavaPlugin() {
 
         Bukkit.getPluginCommand("sethome")!!.setExecutor(SethomeCommand())
         Bukkit.getPluginCommand("homes")!!.setExecutor(HomesCommand())
+        Bukkit.getPluginCommand("delhome")!!.setExecutor(DelhomeCommand())
 
     }
 

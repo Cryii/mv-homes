@@ -10,3 +10,6 @@ commands:
   homes:
     usage: /homes
     description: Displays inventory with current homes
+  delhome:
+    usage: /delhome <home>
+    description: Removes a home

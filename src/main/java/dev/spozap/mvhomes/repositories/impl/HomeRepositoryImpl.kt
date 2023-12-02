@@ -66,6 +66,11 @@ class HomeRepositoryImpl : HomesRepository {
         val playerConfigSection = homesConfigurationFile.getConfigurationSection(playerPath)
                 ?: homesConfigurationFile.createSection(playerPath)
 
+        val currentKeys = playerConfigSection.getKeys(false)
+
+        currentKeys.filter { key -> homes.none { it.id == key } }
+                .forEach { key -> playerConfigSection.set(key, null) }
+
         homes.forEach { home ->
             val homePath = home.id
 
@@ -76,9 +81,7 @@ class HomeRepositoryImpl : HomesRepository {
             homeSection.set("y", home.location.y)
             homeSection.set("z", home.location.z)
             homeSection.set("world", home.location.world.name)
-
         }
-
     }
 
 

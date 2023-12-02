@@ -32,6 +32,21 @@ class HomesManager {
         }
     }
 
+    fun removeHome(player: Player, homeId: String) {
+
+        val playerHomes = data[player.uniqueId] ?: mutableListOf()
+        val homeIndex = playerHomes.indexOfFirst { it.id == homeId }
+
+        if (homeIndex != -1) {
+            player.sendMessage("Has eliminado la home $homeId")
+            playerHomes.removeAt(homeIndex)
+            return
+        }
+
+        player.sendMessage("La home especificada no existe")
+
+    }
+
     fun addHome(player: Player, home: Home) {
         val homeList = data.getOrPut(player.uniqueId) { mutableListOf() }
 
