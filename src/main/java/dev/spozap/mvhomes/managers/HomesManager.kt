@@ -16,6 +16,8 @@ class HomesManager {
         val homes = homeRepository.getPlayerHomes(player)
         data[player.uniqueId] = homes.toMutableList()
 
+        println("Se han cargado homes: ${data.get(player.uniqueId)!!.size}")
+
     }
 
     fun savePlayersData() {

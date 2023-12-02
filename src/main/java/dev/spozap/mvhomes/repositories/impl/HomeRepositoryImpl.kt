@@ -3,6 +3,8 @@ package dev.spozap.mvhomes.repositories.impl
 import dev.spozap.mvhomes.models.Home
 import dev.spozap.mvhomes.repositories.HomesRepository
 import dev.spozap.mvhomes.utils.ConfigurationFile
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -22,7 +24,38 @@ class HomeRepositoryImpl : HomesRepository {
     }
 
     override fun getPlayerHomes(player: Player): List<Home> {
-        return listOf()
+        val playerPath = "players-data.${player.uniqueId}"
+
+        val homes = mutableListOf<Home>()
+
+        if (homesConfigurationFile.getConfigurationSection(playerPath) == null) {
+            return homes
+        }
+
+        val playerSection = homesConfigurationFile.getConfigurationSection(playerPath)
+        val homeKeys = playerSection?.getKeys(false)
+
+        homeKeys?.map { homeKey ->
+
+            val homeSection = playerSection.getConfigurationSection(homeKey)
+
+
+            val x = homeSection!!.getDouble("x")
+            val y = homeSection.getDouble("y")
+            val z = homeSection.getDouble("z")
+            val worldName  = homeSection.getString("world")
+
+            Bukkit.getWorld(worldName!!).let {
+                println("$homeKey $x $y $z")
+                val location = Location(it, x, y, z)
+                val home = Home(homeKey, location)
+                homes.add(home)
+            }
+
+        }
+
+        return homes
+
     }
 
     override fun savePlayerHomes(uuid: UUID, homes: List<Home>) {
