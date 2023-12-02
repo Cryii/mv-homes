@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.persistence.PersistentDataType
 
 class PlayerListeners : Listener {
@@ -21,6 +22,14 @@ class PlayerListeners : Listener {
 
         val player: Player = event.player
         homesManager.loadPlayerInfo(player)
+
+    }
+
+    @EventHandler
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+
+        val player: Player = event.player
+        homesManager.savePlayerData(player)
 
     }
 

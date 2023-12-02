@@ -24,6 +24,14 @@ class HomesManager {
         homeRepository.saveConfig()
     }
 
+    fun savePlayerData(player: Player) {
+        data[player.uniqueId].let {
+            homeRepository.savePlayerHomes(player.uniqueId, it!!.toList())
+            data.remove(player.uniqueId)
+            homeRepository.saveConfig()
+        }
+    }
+
     fun addHome(player: Player, home: Home) {
         val homeList = data.getOrPut(player.uniqueId) { mutableListOf() }
 
