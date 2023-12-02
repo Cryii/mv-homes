@@ -12,6 +12,10 @@ class HomesManager {
     private val homeRepository: HomesRepository = HomeRepositoryImpl()
     private val data: MutableMap<UUID, MutableList<Home>> = mutableMapOf()
 
+    fun reloadPlayersData(players: List<Player>) {
+        players.map { player -> loadPlayerInfo(player) }
+    }
+
     fun loadPlayerInfo(player: Player) {
 
         val homes = homeRepository.getPlayerHomes(player)

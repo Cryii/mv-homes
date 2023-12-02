@@ -23,8 +23,10 @@ class MvHomes : JavaPlugin() {
         saveDefaultConfig()
 
         homesManager = HomesManager()
+        homesManager.reloadPlayersData(Bukkit.getOnlinePlayers().toList())
 
         server.pluginManager.registerEvents(PlayerListeners(), plugin)
+
 
         Bukkit.getPluginCommand("sethome")!!.setExecutor(SethomeCommand())
         Bukkit.getPluginCommand("homes")!!.setExecutor(HomesCommand())
