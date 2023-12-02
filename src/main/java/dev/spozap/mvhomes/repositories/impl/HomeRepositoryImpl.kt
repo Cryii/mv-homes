@@ -11,12 +11,13 @@ import java.util.UUID
 
 class HomeRepositoryImpl : HomesRepository {
 
-    private val homesData = ConfigurationFile("data")
+    private val homesYmlData = ConfigurationFile("data")
     private var homesConfigurationFile: FileConfiguration
 
+
     init {
-        homesData.setup()
-        homesConfigurationFile = homesData.fileConfiguration
+        homesYmlData.setup()
+        homesConfigurationFile = homesYmlData.fileConfiguration
 
         if (homesConfigurationFile.getConfigurationSection("players-data") == null) {
             homesConfigurationFile.createSection("players-data")
@@ -88,7 +89,7 @@ class HomeRepositoryImpl : HomesRepository {
     }
 
     override fun saveConfig() {
-        homesData.save()
+        homesYmlData.save()
     }
 
 

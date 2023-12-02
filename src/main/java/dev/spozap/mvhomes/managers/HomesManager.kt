@@ -3,6 +3,7 @@ package dev.spozap.mvhomes.managers
 import dev.spozap.mvhomes.models.Home
 import dev.spozap.mvhomes.repositories.HomesRepository
 import dev.spozap.mvhomes.repositories.impl.HomeRepositoryImpl
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
 
@@ -16,12 +17,10 @@ class HomesManager {
         val homes = homeRepository.getPlayerHomes(player)
         data[player.uniqueId] = homes.toMutableList()
 
-        println("Se han cargado homes: ${data.get(player.uniqueId)!!.size}")
-
     }
 
     fun savePlayersData() {
-        data.forEach{ (uuid, homes) -> homeRepository.savePlayerHomes(uuid, homes) }
+        data.forEach { (uuid, homes) -> homeRepository.savePlayerHomes(uuid, homes) }
         homeRepository.saveConfig()
     }
 
@@ -37,6 +36,25 @@ class HomesManager {
         }
 
         data[player.uniqueId]!!.map { home -> println("El home tiene nombre ${home.id} y coords ${home.location}") }
+
+    }
+
+    fun getUserHomes(player: Player): List<Home> {
+        return data[player.uniqueId] ?: emptyList()
+    }
+
+    fun teleportToHome(player: Player, homeId: String) {
+        val homes = data[player.uniqueId] ?: emptyList()
+        println("la id del home $homeId")
+        val homeIndex = homes.indexOfFirst { it.id == homeId }
+
+        if (homeIndex == -1) {
+            player.sendMessage("Home does not exist")
+            return
+        }
+
+        val home = data[player.uniqueId]!![homeIndex]
+        player.teleport(home.location)
 
     }
 

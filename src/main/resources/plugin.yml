@@ -7,3 +7,6 @@ commands:
   sethome:
     usage: /sethome
     description: Sets an user home
+  homes:
+    usage: /homes
+    description: Displays inventory with current homes
