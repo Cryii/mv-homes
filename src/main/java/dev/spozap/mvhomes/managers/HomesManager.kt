@@ -3,7 +3,6 @@ package dev.spozap.mvhomes.managers
 import dev.spozap.mvhomes.models.Home
 import dev.spozap.mvhomes.repositories.HomesRepository
 import dev.spozap.mvhomes.repositories.impl.HomeRepositoryImpl
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.UUID
 
@@ -53,16 +52,15 @@ class HomesManager {
 
     fun addHome(player: Player, home: Home) {
         val homeList = data.getOrPut(player.uniqueId) { mutableListOf() }
-
         val existingHomeIndex = homeList.indexOfFirst { it.id == home.id }
 
         if (existingHomeIndex != -1) {
             homeList[existingHomeIndex] = home
+            player.sendMessage("Actualizando home ${home.id}")
         } else {
             homeList.add(home)
+            player.sendMessage("Añadiendo home ${home.id}")
         }
-
-        data[player.uniqueId]!!.map { home -> println("El home tiene nombre ${home.id} y coords ${home.location}") }
 
     }
 
@@ -84,6 +82,12 @@ class HomesManager {
         player.teleport(home.location)
 
     }
+    fun isHomeRepeated(player: Player, homeId: String) : Boolean {
+        val homes = data[player.uniqueId] ?: emptyList()
+        val homeIndex = homes.indexOfFirst { it.id == homeId }
+        return homeIndex != -1
+    }
+
 
 
 }

@@ -10,30 +10,46 @@ import org.bukkit.entity.Player
 
 class SethomeCommand : TabExecutor {
 
-    private val homesManager : HomesManager = MvHomes.homesManager
+    private val homesManager: HomesManager = MvHomes.homesManager
 
-    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<out String>?): MutableList<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<out String>?): MutableList<String> {
         return mutableListOf()
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
 
-        if (sender !is Player) return false
+        if (sender !is Player) return true
 
-        if (!sender.hasPermission(Permissions.SethomePermissions.permission)) {
+        val sethomePerm: String = sender.effectivePermissions.find { ep -> ep.permission.contains(Permissions.SethomePermissions.permission) }?.permission ?: ""
+
+        if (sethomePerm.isEmpty() && !sender.isOp && !sender.hasPermission("*")) {
             sender.sendMessage("No tienes permisos para ejecutar este comando")
+            return true
         }
 
         if (args.size != 1) {
             sender.sendMessage("Argumentos inválidos")
         }
 
-        val homeName = args[0]
+        val numHomes = sethomePerm.split(".").lastOrNull()
+        val playerHomes = homesManager.getUserHomes(sender)
+        val homeId = args[0]
+
         val playerLocation = sender.location
-        val home = Home(homeName, playerLocation)
+        val home = Home(homeId, playerLocation)
+
+        // Permission is mvhomes.sethome, unlimited homes
+        if (numHomes?.toIntOrNull() == null) {
+            homesManager.addHome(sender, home)
+            return true
+        }
+
+        if (playerHomes.size >= numHomes.toInt() && !homesManager.isHomeRepeated(sender, homeId)) {
+            sender.sendMessage("Has llegado al máximo de homes")
+            return true
+        }
 
         sender.sendMessage("Location: $playerLocation")
-
         homesManager.addHome(sender, home)
 
         return true
